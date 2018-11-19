@@ -7,14 +7,22 @@
  * --------------------------------------------
  */
 class ACP_Column_gpf extends AC_Column_gpf
-	implements \ACP\Editing\Editable, \ACP\Sorting\Sortable, \ACP\Export\Exportable {
+	implements \ACP\Editing\Editable, \ACP\Filtering\Filterable, \ACP\Sorting\Sortable, \ACP\Search\Searchable, \ACP\Export\Exportable {
 
 	public function editing() {
 		return new ACP_Editing_Model_gpf( $this );
 	}
 
+	public function filtering() {
+		return new ACP_Filtering_Model_gpf( $this );
+	}
+
 	public function sorting() {
 		return new ACP_Sorting_Model_gpf( $this );
+	}
+
+	public function search() {
+		return new ACP_Search_Model_gpf( $this->get_meta_key(), 'post' );
 	}
 
 	public function export() {
@@ -68,15 +76,44 @@ class ACP_Editing_Model_gpf extends \ACP\Editing\Model {
 
 }
 
+
+/**
+ * Filtering class. Adds filter functionality to the column.
+ */
+class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
+
+}
+
+
 /**
  * Sorting class. Adds sorting functionality to the column.
  */
 class ACP_Sorting_Model_gpf extends \ACP\Sorting\Model {
 
 	// This was optional and the function was removed because we want to sort by raw value only.
-	
+
 }
 
+use \ACP\Search\Operators;
+
+/**
+ * Searching class. Adds search functionality to the column.
+ */
+class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
+	//implements ACP\Search\Comparison\Values
+{
+	public function __construct( $meta_key, $meta_type ) {
+		$operators = new Operators( array(
+			Operators::EQ,
+			Operators::NEQ,
+			Operators::IS_EMPTY,
+			Operators::NOT_IS_EMPTY,
+		) );
+
+		parent::__construct( $operators, $meta_key, $meta_type );
+	}
+
+}
 
 
 /**
@@ -98,4 +135,3 @@ class ACP_Export_Model_gpf extends \ACP\Export\Model {
 		return $value;
 	}
 
-}
