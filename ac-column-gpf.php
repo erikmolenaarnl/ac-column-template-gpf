@@ -1,6 +1,6 @@
 <?php
 
-class AC_Column_gpf extends \AC\Column {
+class AC_Column_gpf extends \AC\Column\Meta {
 
 	public function __construct() {
 
@@ -12,6 +12,13 @@ class AC_Column_gpf extends \AC\Column {
 	}
 
 	/**
+	 * The meta key for this column.
+	 * @return string
+	 */
+	public function get_meta_key() {
+		return 'gpf_priority_level';
+	}
+
 	 * Get the raw, underlying value for the column
 	 * Not suitable for direct display, use get_value() for that
 	 * This value will be used by 'inline-edit' and get_value().
