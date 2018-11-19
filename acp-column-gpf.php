@@ -82,8 +82,10 @@ class ACP_Editing_Model_gpf extends \ACP\Editing\Model {
  */
 class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 
-	// This was optional and the function was removed because we want to sort by raw value only.
-
+	/**
+	 * Uses the parent method and adds filters to check for the excluded status of a product.
+	 * @inheritdoc
+	 */
 	public function get_filtering_vars( $vars ) {
 		$vars = parent::get_filtering_vars( $vars );
 
