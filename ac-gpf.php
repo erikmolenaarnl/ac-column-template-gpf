@@ -1,12 +1,15 @@
 <?php
 /*
-Plugin Name:		Admin Columns - Template for GPF
-Plugin URI:			https://github.com/erikmolenaarnl/ac-column-template-gpf
-Description:		Adds a custom column for Google Product Feed status and the product campaign priority.
-Version:			1.0
-Author:				Erik Molenaar
-Author URI:			https://erikmolenaar.nl
+Plugin Name:        Admin Columns - Template for GPF
+Plugin URI:         https://github.com/erikmolenaarnl/ac-column-template-gpf
+Description:        Adds a custom column for Google Product Feed status and the product campaign priority.
+Version:            1.0
+Author:             Erik Molenaar
+Author URI:         https://erikmolenaar.nl
 GitHub Plugin URI:	https://github.com/erikmolenaarnl/ac-column-template-gpf
+License:            GPLv2 or later
+License URI:        http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:        ac-column-template-gpf
 */
 
 // 1. Set text domain
@@ -42,7 +45,7 @@ function ac_register_pro_column_gpf( \AC\ListScreen $list_screen ) {
 	// Use the type: 'post', 'user', 'comment', 'media' or 'taxonomy'.
 	if ( 'woocommerce' === $list_screen->get_group() ) {
 
-		
+
 		require_once plugin_dir_path( __FILE__ ) . 'ac-column-gpf.php';
 		require_once plugin_dir_path( __FILE__ ) . 'acp-column-gpf.php';
 
