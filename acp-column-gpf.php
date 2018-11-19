@@ -107,8 +107,6 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 			),
 		);
 
-		print_r( $meta_query );
-
 		$vars['meta_query'] = $meta_query;
 
 		return $vars;
@@ -167,3 +165,4 @@ class ACP_Export_Model_gpf extends \ACP\Export\Model {
 		return $value;
 	}
 
+}

@@ -56,7 +56,7 @@ class AC_Column_gpf extends \AC\Column\Meta {
 	public function product_is_excluded( $post_id ) {
 
 		// Retrieving the serialized data
-		$gpf_serialized = get_post_meta ( $post_id, $this->get_woocommerce_gpf_key(), true );
+		$gpf_serialized = get_post_meta( $post_id, $this->get_woocommerce_gpf_key(), true );
 
 		// Checking if custom field was found. If not, die.
 		// Since this is an array type field (serialized) it should always return an array.
