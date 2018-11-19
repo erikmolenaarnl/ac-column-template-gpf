@@ -97,13 +97,12 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 			'relation' => 'AND',
 			$meta_query,
 			array(
-				'key' => $this->column->get_woocommerce_gpf_key(),
-				'value' => serialize( array( 'exclude_product' => 'on' ) ),
-				//'type' => '',
+				'key'     => $this->column->get_woocommerce_gpf_key(),
+				'value'   => $this->column->get_woocommerce_gpf_filter_value(),
 				'compare' => 'NOT LIKE',
 			),
 			array(
-				'key' => $this->column->get_woocommerce_gpf_key(),
+				'key'     => $this->column->get_woocommerce_gpf_key(),
 				'compare' => 'EXISTS',
 			),
 		);

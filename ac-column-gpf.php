@@ -28,6 +28,29 @@ class AC_Column_gpf extends \AC\Column\Meta {
 	}
 
 	/**
+	 * Get the array key that would exclude a product from the feed.
+	 * @return string
+	 */
+	public function get_woocommerce_gpf_excluded_key() {
+		return 'exclude_product';
+	}
+
+	/**
+	 * Get the value that excludes a product from the feed.
+	 * @return string
+	 */
+	public function get_woocommerce_gpf_excluded_value() {
+		return 'on';
+	}
+
+	/**
+	 * Get the metadata value for filter comparison.
+	 */
+	public function get_woocommerce_gpf_filter_value() {
+		return serialize( array( $this->get_woocommerce_gpf_excluded_key() => $this->get_woocommerce_gpf_excluded_value() ) );
+	}
+
+	/**
 	 * Check if a post is excluded from the product feed.
 	 */
 	public function product_is_excluded( $post_id ) {
@@ -41,8 +64,11 @@ class AC_Column_gpf extends \AC\Column\Meta {
 			return true;
 		}
 
+		$key = $this->get_woocommerce_gpf_excluded_key();
+		$val = $this->get_woocommerce_gpf_excluded_value();
+
 		// Checking if 'excluded_product' exists in array AND if it is set to 'on'
-		if ( isset ( $gpf_serialized['exclude_product'] ) && $gpf_serialized['exclude_product'] === 'on' ) {
+		if ( isset ( $gpf_serialized[ $key ] ) && $gpf_serialized[ $key ] === $val ) {
 			return true;
 		}
 
