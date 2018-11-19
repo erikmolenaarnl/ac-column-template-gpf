@@ -82,6 +82,35 @@ class ACP_Editing_Model_gpf extends \ACP\Editing\Model {
  */
 class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 
+	// This was optional and the function was removed because we want to sort by raw value only.
+
+	public function get_filtering_vars( $vars ) {
+		$vars = parent::get_filtering_vars( $vars );
+
+		if ( ! isset( $vars['meta_query'] ) ) {
+			return $vars;
+		}
+
+		$meta_query = $vars['meta_query'];
+
+		$meta_query = array(
+			'relation' => 'AND',
+			$meta_query,
+			array(
+				'key' => $this->column->get_woocommerce_gpf_key(),
+				'value' => serialize( array( 'exclude_product' => 'on' ) ),
+				//'type' => '',
+				'compare' => 'NOT LIKE',
+			),
+		);
+
+		print_r( $meta_query );
+
+		$vars['meta_query'] = $meta_query;
+
+		return $vars;
+	}
+
 }
 
 
