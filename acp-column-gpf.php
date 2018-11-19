@@ -102,6 +102,10 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 				//'type' => '',
 				'compare' => 'NOT LIKE',
 			),
+			array(
+				'key' => $this->column->get_woocommerce_gpf_key(),
+				'compare' => 'EXISTS',
+			),
 		);
 
 		print_r( $meta_query );
