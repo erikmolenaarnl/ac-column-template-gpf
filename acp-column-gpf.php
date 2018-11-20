@@ -33,17 +33,17 @@ class ACP_Column_gpf extends AC_Column_gpf
 	 * Get the query for filter out excluded products.
 	 * @return array
 	 */
-	public function get_woocommerce_gpf_excluded_query( $meta_query = array() ) {
+	public function get_wc_gpf_excluded_query( $meta_query = array() ) {
 		return array(
 			'relation' => 'AND',
 			$meta_query,
 			array(
-				'key'     => $this->get_woocommerce_gpf_key(),
-				'value'   => $this->get_woocommerce_gpf_filter_value(),
+				'key'     => $this->get_wc_gpf_key(),
+				'value'   => $this->get_wc_gpf_filter_value(),
 				'compare' => 'NOT LIKE',
 			),
 			array(
-				'key'     => $this->get_woocommerce_gpf_key(),
+				'key'     => $this->get_wc_gpf_key(),
 				'compare' => 'EXISTS',
 			),
 		);
@@ -114,7 +114,7 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 			return $vars;
 		}
 
-		$vars['meta_query'] = $this->column->get_woocommerce_gpf_excluded_query( $vars['meta_query'] );
+		$vars['meta_query'] = $this->column->get_wc_gpf_excluded_query( $vars['meta_query'] );
 
 		return $vars;
 	}
@@ -136,7 +136,6 @@ use \ACP\Search\Operators;
 use \ACP\Search\Value;
 use \ACP\Search\Query\Bindings;
 use \ACP\Helper\Select\Options;
-use \ACP\Search\Helper\MetaQuery\ComparisonFactory;
 
 /**
  * Searching class. Adds search functionality to the column.
@@ -170,7 +169,7 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 	public function create_query_bindings( $operator, Value $value ) {
 		$bindings = new Bindings();
 		$bindings->meta_query(
-			$this->column->get_woocommerce_gpf_excluded_query(
+			$this->column->get_wc_gpf_excluded_query(
 				$this->get_meta_query( $operator, $value )
 			)
 		);

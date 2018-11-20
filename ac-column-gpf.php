@@ -31,7 +31,7 @@ class AC_Column_gpf extends \AC\Column\Meta {
 	 * The meta key for the woocommerce GPF excluded data.
 	 * @return string
 	 */
-	public function get_woocommerce_gpf_key() {
+	public function get_wc_gpf_key() {
 		return '_woocommerce_gpf_data';
 	}
 
@@ -39,7 +39,7 @@ class AC_Column_gpf extends \AC\Column\Meta {
 	 * Get the array key that would exclude a product from the feed.
 	 * @return string
 	 */
-	public function get_woocommerce_gpf_excluded_key() {
+	public function get_wc_gpf_excluded_key() {
 		return 'exclude_product';
 	}
 
@@ -47,15 +47,15 @@ class AC_Column_gpf extends \AC\Column\Meta {
 	 * Get the value that excludes a product from the feed.
 	 * @return string
 	 */
-	public function get_woocommerce_gpf_excluded_value() {
+	public function get_wc_gpf_excluded_value() {
 		return 'on';
 	}
 
 	/**
 	 * Get the metadata value for filter comparison.
 	 */
-	public function get_woocommerce_gpf_filter_value() {
-		return serialize( array( $this->get_woocommerce_gpf_excluded_key() => $this->get_woocommerce_gpf_excluded_value() ) );
+	public function get_wc_gpf_filter_value() {
+		return serialize( array( $this->get_wc_gpf_excluded_key() => $this->get_wc_gpf_excluded_value() ) );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class AC_Column_gpf extends \AC\Column\Meta {
 	public function product_is_excluded( $post_id ) {
 
 		// Retrieving the serialized data
-		$gpf_serialized = get_post_meta( $post_id, $this->get_woocommerce_gpf_key(), true );
+		$gpf_serialized = get_post_meta( $post_id, $this->get_wc_gpf_key(), true );
 
 		// Checking if custom field was found. If not, die.
 		// Since this is an array type field (serialized) it should always return an array.
@@ -72,8 +72,8 @@ class AC_Column_gpf extends \AC\Column\Meta {
 			return true;
 		}
 
-		$key = $this->get_woocommerce_gpf_excluded_key();
-		$val = $this->get_woocommerce_gpf_excluded_value();
+		$key = $this->get_wc_gpf_excluded_key();
+		$val = $this->get_wc_gpf_excluded_value();
 
 		// Checking if 'excluded_product' exists in array AND if it is set to 'on'
 		if ( isset ( $gpf_serialized[ $key ] ) && $gpf_serialized[ $key ] === $val ) {
