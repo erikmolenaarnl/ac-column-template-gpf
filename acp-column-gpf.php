@@ -130,13 +130,16 @@ class ACP_Sorting_Model_gpf extends \ACP\Sorting\Model {
 
 }
 
+
 use \ACP\Search\Operators;
+use \ACP\Search\Value;
+use \ACP\Helper\Select\Options;
 
 /**
  * Searching class. Adds search functionality to the column.
  */
 class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
-	//implements ACP\Search\Comparison\Values
+	implements ACP\Search\Comparison\Values
 {
 	public $column = null;
 
@@ -151,6 +154,11 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 		$this->column = $column;
 
 		parent::__construct( $operators, $column->get_meta_key(), $column->get_meta_type() );
+	}
+
+	public function get_values() {
+		$values = $this->column->filtering()->get_meta_values();
+		return Options::create_from_array( array_combine( $values, $values ) );
 	}
 
 }
