@@ -29,6 +29,26 @@ class ACP_Column_gpf extends AC_Column_gpf
 		return new ACP_Export_Model_gpf( $this );
 	}
 
+	/**
+	 * Get the query for filter out excluded products.
+	 * @return array
+	 */
+	public function get_woocommerce_gpf_excluded_query( $meta_query = array() ) {
+		return array(
+			'relation' => 'AND',
+			$meta_query,
+			array(
+				'key'     => $this->get_woocommerce_gpf_key(),
+				'value'   => $this->get_woocommerce_gpf_filter_value(),
+				'compare' => 'NOT LIKE',
+			),
+			array(
+				'key'     => $this->get_woocommerce_gpf_key(),
+				'compare' => 'EXISTS',
+			),
+		);
+	}
+
 }
 
 /**
@@ -93,23 +113,7 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 			return $vars;
 		}
 
-		$meta_query = $vars['meta_query'];
-
-		$meta_query = array(
-			'relation' => 'AND',
-			$meta_query,
-			array(
-				'key'     => $this->column->get_woocommerce_gpf_key(),
-				'value'   => $this->column->get_woocommerce_gpf_filter_value(),
-				'compare' => 'NOT LIKE',
-			),
-			array(
-				'key'     => $this->column->get_woocommerce_gpf_key(),
-				'compare' => 'EXISTS',
-			),
-		);
-
-		$vars['meta_query'] = $meta_query;
+		$vars['meta_query'] = $this->column->get_woocommerce_gpf_excluded_query( $vars['meta_query'] );
 
 		return $vars;
 	}
