@@ -22,7 +22,7 @@ class ACP_Column_gpf extends AC_Column_gpf
 	}
 
 	public function search() {
-		return new ACP_Search_Model_gpf( $this->get_meta_key(), 'post' );
+		return new ACP_Search_Model_gpf( $this );
 	}
 
 	public function export() {
@@ -138,7 +138,9 @@ use \ACP\Search\Operators;
 class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 	//implements ACP\Search\Comparison\Values
 {
-	public function __construct( $meta_key, $meta_type ) {
+	public $column = null;
+
+	public function __construct( $column ) {
 		$operators = new Operators( array(
 			Operators::EQ,
 			Operators::NEQ,
@@ -146,7 +148,9 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 			Operators::NOT_IS_EMPTY,
 		) );
 
-		parent::__construct( $operators, $meta_key, $meta_type );
+		$this->column = $column;
+
+		parent::__construct( $operators, $column->get_meta_key(), $column->get_meta_type() );
 	}
 
 }
