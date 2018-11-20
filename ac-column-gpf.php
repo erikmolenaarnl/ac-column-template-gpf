@@ -20,6 +20,14 @@ class AC_Column_gpf extends \AC\Column\Meta {
 	}
 
 	/**
+	 * The meta type for this column.
+	 * @return string
+	 */
+	public function get_meta_type() {
+		return 'post';
+	}
+
+	/**
 	 * The meta key for the woocommerce GPF excluded data.
 	 * @return string
 	 */
