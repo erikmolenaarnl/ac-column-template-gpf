@@ -51,6 +51,7 @@ class ACP_Column_gpf extends AC_Column_gpf
 
 }
 
+
 /**
  * Editing class. Adds editing functionality to the column.
  */
@@ -133,7 +134,9 @@ class ACP_Sorting_Model_gpf extends \ACP\Sorting\Model {
 
 use \ACP\Search\Operators;
 use \ACP\Search\Value;
+use \ACP\Search\Query\Bindings;
 use \ACP\Helper\Select\Options;
+use \ACP\Search\Helper\MetaQuery\ComparisonFactory;
 
 /**
  * Searching class. Adds search functionality to the column.
@@ -159,6 +162,20 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 	public function get_values() {
 		$values = $this->column->filtering()->get_meta_values();
 		return Options::create_from_array( array_combine( $values, $values ) );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function create_query_bindings( $operator, Value $value ) {
+		$bindings = new Bindings();
+		$bindings->meta_query(
+			$this->column->get_woocommerce_gpf_excluded_query(
+				$this->get_meta_query( $operator, $value )
+			)
+		);
+
+		return $bindings;
 	}
 
 }
