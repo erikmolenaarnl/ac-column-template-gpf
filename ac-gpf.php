@@ -4,8 +4,8 @@ Plugin Name:        Admin Columns - Template for GPF
 Plugin URI:         https://github.com/erikmolenaarnl/ac-column-template-gpf
 Description:        Adds a custom column for Google Product Feed status and the product campaign priority.
 Version:            1.1
-Author:             Erik Molenaar
-Author URI:         https://erikmolenaar.nl
+Author:             Jory Hogeveen
+Author URI:         https://www.keraweb.nl
 GitHub Plugin URI:	https://github.com/erikmolenaarnl/ac-column-template-gpf
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
