@@ -35,8 +35,8 @@ class ACP_Column_gpf extends AC_Column_gpf
 	 * @return array
 	 */
 	public function add_wc_gpf_options( $options = array() ) {
-		$options['_default']  = __( 'Default Priority', 'ac-column-template-gpf' );
-		$options['_excluded'] = __( 'Excluded', 'ac-column-template-gpf' );
+		$options['__gpf_included'] = __( 'Included', 'ac-column-template-gpf' ); // Default Priority.
+		$options['__gpf_excluded'] = __( 'Excluded', 'ac-column-template-gpf' );
 		return $options;
 	}
 
@@ -130,7 +130,7 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 		$reversed = false;
 
 		switch ( $val ) {
-			case '_default':
+			case '__gpf_included':
 				$vars = array( 'meta_query' => array(
 					'relation' => 'OR',
 					array(
@@ -143,7 +143,7 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 					)
 				) );
 			break;
-			case '_excluded':
+			case '__gpf_excluded':
 				$reversed = true;
 			break;
 			default:
@@ -212,8 +212,9 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 		$meta_query = array();
 		$val        = ( $value instanceof Value ) ? $value->get_value() : $value;
 		$reversed   = false;
+
 		switch ( $val ) {
-			case '_default':
+			case '__gpf_included':
 				$value = new Value( '', 'string' );
 				switch ( $operator ) {
 					case '=':
@@ -225,7 +226,7 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 				}
 				$meta_query = $this->get_meta_query( $operator, $value );
 			break;
-			case '_excluded':
+			case '__gpf_excluded':
 				if ( '=' === $operator ) {
 					$reversed = true;
 				}
@@ -234,6 +235,7 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 				$meta_query = $this->get_meta_query( $operator, $value );
 			break;
 		}
+
 		$bindings->meta_query(
 			$this->column->get_wc_gpf_excluded_query( $meta_query, $reversed )
 		);
