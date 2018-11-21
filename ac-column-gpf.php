@@ -69,7 +69,7 @@ class AC_Column_gpf extends \AC\Column\Meta {
 		// Checking if custom field was found. If not, die.
 		// Since this is an array type field (serialized) it should always return an array.
 		if ( ! is_array( $gpf_serialized ) ) {
-			return true;
+			return false;
 		}
 
 		$key = $this->get_wc_gpf_excluded_key();
