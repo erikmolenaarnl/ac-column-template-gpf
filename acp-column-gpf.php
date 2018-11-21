@@ -128,10 +128,11 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 	public function get_filtering_vars( $vars ) {
 		$val      = $this->get_filter_value();
 		$reversed = false;
+		$vars     = parent::get_filtering_vars( $vars );
 
 		switch ( $val ) {
 			case '__gpf_included':
-				$vars = array( 'meta_query' => array(
+				$vars['meta_query'] = array(
 					'relation' => 'OR',
 					array(
 						'key'   => $this->column->get_meta_key(),
@@ -141,13 +142,11 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 						'key'     => $this->column->get_meta_key(),
 						'compare' => 'NOT EXISTS',
 					)
-				) );
+				);
 			break;
 			case '__gpf_excluded':
 				$reversed = true;
-			break;
-			default:
-				$vars = parent::get_filtering_vars( $vars );
+				$vars['meta_query'] = array();
 			break;
 		}
 
