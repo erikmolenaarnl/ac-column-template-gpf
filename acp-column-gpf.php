@@ -163,18 +163,42 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 
 	public function get_values() {
 		$values = $this->column->filtering()->get_meta_values();
-		return Options::create_from_array( array_combine( $values, $values ) );
+		$values = array_combine( $values, $values );
+		$values['_default'] = __( 'Default Priority', 'ac-column-template-gpf' );
+		$values['_excluded'] = __( 'Excluded', 'ac-column-template-gpf' );
+		return Options::create_from_array( $values );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function create_query_bindings( $operator, Value $value ) {
-		$bindings = new Bindings();
+		$bindings   = new Bindings();
+		$meta_query = array();
+		$val        = ( $value instanceof Value ) ? $value->get_value() : $value;
+		$reversed   = false;
+		switch ( $val ) {
+			case '_default':
+				$value = new Value( '', 'string' );
+				switch ( $operator ) {
+					case '=':
+						$operator = Operators::IS_EMPTY;
+					break;
+					case '!=':
+						$operator = Operators::NOT_IS_EMPTY;
+					break;
+				}
+				$meta_query = $this->get_meta_query( $operator, $value );
+			break;
+			case '_excluded':
+				$reversed = true;
+			break;
+			default:
+				$meta_query = $this->get_meta_query( $operator, $value );
+			break;
+		}
 		$bindings->meta_query(
-			$this->column->get_wc_gpf_excluded_query(
-				$this->get_meta_query( $operator, $value )
-			)
+			$this->column->get_wc_gpf_excluded_query( $meta_query, $reversed )
 		);
 
 		return $bindings;
