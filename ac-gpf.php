@@ -24,31 +24,23 @@ function ac_register_column_gpf( \AC\ListScreen $list_screen ) {
 	// Use the type: 'post', 'user', 'comment' or 'media'.
 	if ( 'woocommerce' === $list_screen->get_group() ) {
 
-		require_once plugin_dir_path( __FILE__ ) . 'ac-column-gpf.php';
+		if ( ! class_exists( '\ACP\AdminColumnsPro' ) ) {
 
-		$list_screen->register_column_type( new AC_Column_gpf );
-	}
-}
+			require_once plugin_dir_path( __FILE__ ) . 'ac-column-gpf.php';
 
-// -------------------------------------- //
-// This part is for the PRO version only. //
-// -------------------------------------- //
+			$list_screen->register_column_type( new AC_Column_gpf );
 
-// 3. (Optional) Register the PRO column.
-add_action( 'ac/column_types', 'ac_register_pro_column_gpf' );
+		} else {
 
-function ac_register_pro_column_gpf( \AC\ListScreen $list_screen ) {
-	if ( ! class_exists( '\ACP\AdminColumnsPro' ) ) {
-		return;
-	}
+			// -------------------------------------- //
+			// This part is for the PRO version only. //
+			// -------------------------------------- //
 
-	// Use the type: 'post', 'user', 'comment', 'media' or 'taxonomy'.
-	if ( 'woocommerce' === $list_screen->get_group() ) {
+			require_once plugin_dir_path( __FILE__ ) . 'ac-column-gpf.php';
+			require_once plugin_dir_path( __FILE__ ) . 'acp-column-gpf.php';
 
+			$list_screen->register_column_type( new ACP_Column_gpf );
 
-		require_once plugin_dir_path( __FILE__ ) . 'ac-column-gpf.php';
-		require_once plugin_dir_path( __FILE__ ) . 'acp-column-gpf.php';
-
-		$list_screen->register_column_type( new ACP_Column_gpf );
+		}
 	}
 }
