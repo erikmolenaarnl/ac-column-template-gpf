@@ -31,20 +31,25 @@ class ACP_Column_gpf extends AC_Column_gpf
 
 	/**
 	 * Get the query for filter out excluded products.
+	 * @param  array  $meta_query
+	 * @param  bool   $reversed
 	 * @return array
 	 */
-	public function get_wc_gpf_excluded_query( $meta_query = array() ) {
+	public function get_wc_gpf_excluded_query( $meta_query = array(), $reversed = false ) {
 		return array(
 			'relation' => 'AND',
 			$meta_query,
 			array(
-				'key'     => $this->get_wc_gpf_key(),
-				'value'   => $this->get_wc_gpf_filter_value(),
-				'compare' => 'NOT LIKE',
-			),
-			array(
-				'key'     => $this->get_wc_gpf_key(),
-				'compare' => 'EXISTS',
+				'relation' => $reversed ? 'AND' : 'OR',
+				array(
+					'key'     => $this->get_wc_gpf_key(),
+					'value'   => $this->get_wc_gpf_filter_value(),
+					'compare' => $reversed ? 'LIKE' : 'NOT LIKE',
+				),
+				array(
+					'key'     => $this->get_wc_gpf_key(),
+					'compare' => $reversed ? 'EXISTS' : 'NOT EXISTS',
+				),
 			),
 		);
 	}
