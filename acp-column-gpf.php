@@ -104,6 +104,13 @@ class ACP_Editing_Model_gpf extends \ACP\Editing\Model {
  */
 class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 
+	public function get_filtering_data() {
+		$data = parent::get_filtering_data();
+		$data['options']['_default'] = __( 'Default Priority', 'ac-column-template-gpf' );
+		$data['options']['_excluded'] = __( 'Excluded', 'ac-column-template-gpf' );
+		return $data;
+	}
+
 	/**
 	 * Uses the parent method and adds filters to check for the excluded status of a product.
 	 * @inheritdoc
