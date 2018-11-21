@@ -116,13 +116,36 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 	 * @inheritdoc
 	 */
 	public function get_filtering_vars( $vars ) {
-		$vars = parent::get_filtering_vars( $vars );
+		$val      = $this->get_filter_value();
+		$reversed = false;
+
+		switch ( $val ) {
+			case '_default':
+				$vars = array( 'meta_query' => array(
+					'relation' => 'OR',
+					array(
+						'key'   => $this->column->get_meta_key(),
+						'value' => '',
+					),
+					array(
+						'key'     => $this->column->get_meta_key(),
+						'compare' => 'NOT EXISTS',
+					)
+				) );
+			break;
+			case '_excluded':
+				$reversed = true;
+			break;
+			default:
+				$vars = parent::get_filtering_vars( $vars );
+			break;
+		}
 
 		if ( ! isset( $vars['meta_query'] ) ) {
 			return $vars;
 		}
 
-		$vars['meta_query'] = $this->column->get_wc_gpf_excluded_query( $vars['meta_query'] );
+		$vars['meta_query'] = $this->column->get_wc_gpf_excluded_query( $vars['meta_query'], $reversed );
 
 		return $vars;
 	}
