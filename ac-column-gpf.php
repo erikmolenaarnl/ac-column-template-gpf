@@ -55,7 +55,14 @@ class AC_Column_gpf extends \AC\Column\Meta {
 	 * Get the metadata value for filter comparison.
 	 */
 	public function get_wc_gpf_filter_value() {
-		return serialize( array( $this->get_wc_gpf_excluded_key() => $this->get_wc_gpf_excluded_value() ) );
+		static $val;
+		if ( $val ) {
+			return $val;
+		}
+		$val = serialize( array( $this->get_wc_gpf_excluded_key() => $this->get_wc_gpf_excluded_value() ) );
+		// Remove the surrounding serialized array wrapper to prevent imcompatibilities with larger serialized arrays.
+		$val = substr( $val, 5, -1 );
+		return $val;
 	}
 
 	/**
