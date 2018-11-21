@@ -149,8 +149,6 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 		$operators = new Operators( array(
 			Operators::EQ,
 			Operators::NEQ,
-			Operators::IS_EMPTY,
-			Operators::NOT_IS_EMPTY,
 		) );
 
 		$this->column = $column;
