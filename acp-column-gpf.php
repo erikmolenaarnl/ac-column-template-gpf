@@ -191,7 +191,9 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 				$meta_query = $this->get_meta_query( $operator, $value );
 			break;
 			case '_excluded':
-				$reversed = true;
+				if ( '=' === $operator ) {
+					$reversed = true;
+				}
 			break;
 			default:
 				$meta_query = $this->get_meta_query( $operator, $value );
