@@ -30,6 +30,17 @@ class ACP_Column_gpf extends AC_Column_gpf
 	}
 
 	/**
+	 * Append custom GPF filter/search options to an existing array.
+	 * @param  array  $options
+	 * @return array
+	 */
+	public function add_wc_gpf_options( $options = array() ) {
+		$options['_default']  = __( 'Default Priority', 'ac-column-template-gpf' );
+		$options['_excluded'] = __( 'Excluded', 'ac-column-template-gpf' );
+		return $options;
+	}
+
+	/**
 	 * Get the query for filter out excluded products.
 	 * @param  array  $meta_query
 	 * @param  bool   $reversed
@@ -106,8 +117,7 @@ class ACP_Filtering_Model_gpf extends \ACP\Filtering\Model\Meta {
 
 	public function get_filtering_data() {
 		$data = parent::get_filtering_data();
-		$data['options']['_default'] = __( 'Default Priority', 'ac-column-template-gpf' );
-		$data['options']['_excluded'] = __( 'Excluded', 'ac-column-template-gpf' );
+		$data['options'] = $this->column->add_wc_gpf_options( $data['options'] );
 		return $data;
 	}
 
@@ -190,8 +200,7 @@ class ACP_Search_Model_gpf extends \ACP\Search\Comparison\Meta
 	public function get_values() {
 		$values = $this->column->filtering()->get_meta_values();
 		$values = array_combine( $values, $values );
-		$values['_default'] = __( 'Default Priority', 'ac-column-template-gpf' );
-		$values['_excluded'] = __( 'Excluded', 'ac-column-template-gpf' );
+		$values = $this->column->add_wc_gpf_options( $values );
 		return Options::create_from_array( $values );
 	}
 
