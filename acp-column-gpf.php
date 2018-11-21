@@ -36,21 +36,17 @@ class ACP_Column_gpf extends AC_Column_gpf
 	 * @return array
 	 */
 	public function get_wc_gpf_excluded_query( $meta_query = array(), $reversed = false ) {
+
+		$gpf_query = array(
+			'key'     => $this->get_wc_gpf_key(),
+			'value'   => $this->get_wc_gpf_filter_value(),
+			'compare' => $reversed ? 'LIKE' : 'NOT LIKE',
+		);
+
 		return array(
 			'relation' => 'AND',
 			$meta_query,
-			array(
-				'relation' => $reversed ? 'AND' : 'OR',
-				array(
-					'key'     => $this->get_wc_gpf_key(),
-					'value'   => $this->get_wc_gpf_filter_value(),
-					'compare' => $reversed ? 'LIKE' : 'NOT LIKE',
-				),
-				array(
-					'key'     => $this->get_wc_gpf_key(),
-					'compare' => $reversed ? 'EXISTS' : 'NOT EXISTS',
-				),
-			),
+			$gpf_query,
 		);
 	}
 
