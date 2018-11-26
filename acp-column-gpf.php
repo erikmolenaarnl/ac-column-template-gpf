@@ -35,7 +35,15 @@ class ACP_Column_gpf extends AC_Column_gpf
 	 * @return array
 	 */
 	public function add_wc_gpf_options( $options = array() ) {
-		$options['__gpf_included'] = __( 'Included', 'ac-column-template-gpf' ); // Default Priority.
+		$included = __( 'Included', 'ac-column-template-gpf' );
+		if ( ! empty( $options ) ) {
+			foreach ( $options as $key => $val ) {
+				if ( $val !== $included ) {
+					$options[ $key ] = $included . ' (' . $val . ')';
+				}
+			}
+		}
+		$options['__gpf_included'] = $included; // Any/Default Priority.
 		$options['__gpf_excluded'] = __( 'Excluded', 'ac-column-template-gpf' );
 		return $options;
 	}
