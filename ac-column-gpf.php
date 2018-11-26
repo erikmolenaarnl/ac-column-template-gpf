@@ -106,13 +106,15 @@ class AC_Column_gpf extends \AC\Column\Meta {
 
 		// Checking if this post is excluded.
 		if ( $this->product_is_excluded( $post_id ) ) {
-			return ''; // Excluded.
+			return __( 'Excluded', 'ac-column-template-gpf' ); // .
 		}
 
-		$value = parent::get_raw_value( $post_id );
+		$value = __( 'Included', 'ac-column-template-gpf' ); // Default Priority.
 
-		if ( ! $value ) {
-			return __( 'Included', 'ac-column-template-gpf' ); // Default Priority.
+		$prio_value = parent::get_raw_value( $post_id );
+
+		if ( $prio_value ) {
+			$value .= ' (' . $prio_value . ')';
 		}
 
 		return $value;
